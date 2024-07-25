@@ -1,0 +1,9 @@
+[submodule "GBox/vendor/spdlog"]
+	path = GBox/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "GBox/vendor/GLFW"]
+	path = GBox/vendor/GLFW
+	url = https://github.com/TechAoba/glfw
+[submodule "GBox/vendor/imgui"]
+	path = GBox/vendor/imgui
+	url = https://github.com/TechAoba/imgui
