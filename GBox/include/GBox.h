@@ -5,6 +5,10 @@
 #include "GBox/Core/Layer.h"
 #include "GBox/Core/Log.h"
 
+#include "GBox/Core/Input.h"
+#include "GBox/Core/KeyCodes.h"
+#include "GBox/Core/MouseButtonCodes.h"
+
 #include "GBox/ImGui/ImGuiLayer.h"
 
 // Entry Point

@@ -2,6 +2,7 @@
 #include "GBox/Core/Application.h"
 
 #include <glad/glad.h>
+#include "GBox/Core/Input.h"
 
 namespace GBox {
 

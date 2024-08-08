@@ -5,11 +5,17 @@ public:
     ExampleLayer() : Layer("Example") {}
 
     void OnUpdate() override {
-        GBOX_INFO("ExampleLayer::Update");
+        if (GBox::Input::IsKeyPressed(GBOX_KEY_TAB))
+            GBOX_INFO("Tab key is pressed(poll)!");
     }
 
     void OnEvent(GBox::Event& event) override {
-        GBOX_TRACE("{0}", event.ToString());
+        if (event.GetEventType() == GBox::EventType::KeyPressed) {
+            GBox::KeyPressedEvent& e = (GBox::KeyPressedEvent&)event;
+            GBOX_TRACE("{0}", (char)e.GetKeyCode());
+            if (GBox::Input::IsKeyPressed(GBOX_KEY_TAB))
+                GBOX_INFO("Tab key is pressed(event)!");
+        }
     }
 };
 

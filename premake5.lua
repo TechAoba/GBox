@@ -25,12 +25,12 @@ IncludeDir["ImGui"] = "GBox/vendor/imgui"                                       
 
 ---------------------------------------------------------------------------------------
 -- 包含GBox/GBox/vendor/GLFW、GBox/GBox/vendor/Glad、GBox/GBox/vendor/imgui中的premake文件，将其作为依赖项，并合并到这里
--- group "Dependencies"
+group "Dependencies"
     include "GBox/vendor/GLFW"
     include "GBox/vendor/Glad"
     include "GBox/vendor/imgui"
 
--- group ""                                                                        --包含所有未分组的文件
+group ""                                                                        --包含所有未分组的文件
 
 --[[
     XXXX
