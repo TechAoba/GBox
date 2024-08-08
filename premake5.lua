@@ -20,7 +20,7 @@ IncludeDir = {}                                                                 
 IncludeDir["GLFW"] = "GBox/vendor/GLFW/include"                                  --将表的"GLFW"键索引到此路径
 IncludeDir["Glad"] = "GBox/vendor/Glad/include"                                  --将表的"Glad"键索引到此路径
 IncludeDir["ImGui"] = "GBox/vendor/imgui"                                        --将表的"ImGui"键索引到此路径
--- IncludeDir["glm"] = "GBox/vendor/glm"                                            --将表的"ImGui"键索引到此路径
+IncludeDir["glm"] = "GBox/vendor/glm"                                            --将表的"ImGui"键索引到此路径
 -- IncludeDir["stb_image"] = "GBox/vendor/stb_image"
 
 ---------------------------------------------------------------------------------------
@@ -54,11 +54,11 @@ project "GBox"                       --项目
     files                           --将源代码文件包含到项目中
     {
        "%{prj.name}/include/**.h",
-       "%{prj.name}/src/**.cpp"
+       "%{prj.name}/src/**.cpp",
+       "%{prj.name}/vendor/glm/glm/**.hpp",
+       "%{prj.name}/vendor/glm/glm/**.inl"
     --    "%{prj.name}/vendor/stb_image/**.h",
     --    "%{prj.name}/vendor/stb_image/**.cpp",
-    --    "%{prj.name}/vendor/glm/glm/**.hpp",
-    --    "%{prj.name}/vendor/glm/glm/**.inl"
     }
 
     -- defines
@@ -73,8 +73,8 @@ project "GBox"                       --项目
         "%{prj.name}/vendor/spdlog/include",
         "%{IncludeDir.GLFW}",                                                   --将IncludeDir表中GLFW键索引的值（地址）作为一个库文件路径
         "%{IncludeDir.Glad}",                                                   --将IncludeDir表中Glad键索引的值（地址）作为一个库文件路径
-        "%{IncludeDir.ImGui}"                                                  --将IncludeDir表中ImGui键索引的值（地址）作为一个库文件路径
-        -- "%{IncludeDir.glm}",                                                    --将IncludeDir表中glm键索引的值（地址）作为一个库文件路径
+        "%{IncludeDir.ImGui}",                                                  --将IncludeDir表中ImGui键索引的值（地址）作为一个库文件路径
+        "%{IncludeDir.glm}"                                                    --将IncludeDir表中glm键索引的值（地址）作为一个库文件路径
         -- "%{IncludeDir.stb_image}"
     }
 
@@ -142,8 +142,8 @@ project "Sandbox"
         "GBox/vendor/spdlog/include",
         "GBox/include",
         "GBox/src",
-        "GBox/vendor"
-        -- "%{IncludeDir.glm}"
+        "GBox/vendor",
+        "%{IncludeDir.glm}"
     }
 
     links                           --链接

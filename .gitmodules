@@ -7,3 +7,6 @@
 [submodule "GBox/vendor/imgui"]
 	path = GBox/vendor/imgui
 	url = https://github.com/TechAoba/imgui
+[submodule "GBox/vendor/glm"]
+	path = GBox/vendor/glm
+	url = http://github.com/g-truc/glm

@@ -1,8 +1,8 @@
 #include "gboxpch.h"
 #include "GBox/Core/Application.h"
+#include "GBox/Core/Input.h"
 
 #include <glad/glad.h>
-#include "GBox/Core/Input.h"
 
 namespace GBox {
 

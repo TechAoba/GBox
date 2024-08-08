@@ -2,7 +2,9 @@
 
 class ExampleLayer : public GBox::Layer {
 public:
-    ExampleLayer() : Layer("Example") {}
+    ExampleLayer() : Layer("Example") {
+        
+    }
 
     void OnUpdate() override {
         if (GBox::Input::IsKeyPressed(GBOX_KEY_TAB))
