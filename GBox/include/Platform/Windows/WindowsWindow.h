@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GBox/Core/Window.h"
+#include "GBox/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -28,7 +29,7 @@ private:
 
 private:
     GLFWwindow* _gwindow;
-    // Scope<GraphicsContext> _context;
+    GraphicsContext* _context;
 
     struct WindowData {
         std::string Title;

@@ -4,6 +4,8 @@
 #include "GBox/Events/ApplicationEvent.h"
 #include "GBox/Events/KeyEvent.h"
 
+#include "Platform/OpenGL/OpenGLContext.h"
+
 #include <glad/glad.h>
 
 namespace GBox{
@@ -25,6 +27,7 @@ void WindowsWindow::Init(const WindowProps& props) {
     _windowdata.Title = props.Title;
     _windowdata.Width = props.Width;
     _windowdata.Height = props.Height;
+
     GBOX_CORE_INFO("Creating window: {0} ({1} , {2})", props.Title, props.Width, props.Height);
 
     if (!s_GLFWInitialized) {
@@ -38,10 +41,9 @@ void WindowsWindow::Init(const WindowProps& props) {
     }
 
     _gwindow = glfwCreateWindow((int)props.Width, (int)props.Height, _windowdata.Title.c_str(), nullptr, nullptr);
-    glfwMakeContextCurrent(_gwindow);
-
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    GBOX_CORE_ASSERT(status, "Failed to initialize Glad!");
+    
+    _context = new OpenGLContext(_gwindow);
+    _context->Init();
 
     glfwSetWindowUserPointer(_gwindow, &_windowdata);
     SetVSync(true);
@@ -109,7 +111,7 @@ void WindowsWindow::Shutdown() {
 
 void WindowsWindow::OnUpdate() {
     glfwPollEvents();
-    glfwSwapBuffers(_gwindow);
+    _context->SwapBuffers();
 }
 
 void WindowsWindow::SetVSync(bool enabled) {
