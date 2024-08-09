@@ -1,4 +1,5 @@
 #include <GBox.h>
+#include <imgui/imgui.h>
 
 class ExampleLayer : public GBox::Layer {
 public:
@@ -7,9 +8,15 @@ public:
     }
 
     void OnUpdate() override {
-        if (GBox::Input::IsKeyPressed(GBOX_KEY_TAB))
-            GBOX_INFO("Tab key is pressed(poll)!");
+        // if (GBox::Input::IsKeyPressed(GBOX_KEY_TAB))
+        //     GBOX_INFO("Tab key is pressed(poll)!");
     }
+
+    void OnImGuiRender() {
+		ImGui::Begin("Test");
+		ImGui::Text("Hello world");
+		ImGui::End();
+	}
 
     void OnEvent(GBox::Event& event) override {
         if (event.GetEventType() == GBox::EventType::KeyPressed) {

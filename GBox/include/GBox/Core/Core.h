@@ -36,13 +36,17 @@
 #endif
 
 #ifdef GBOX_PLATFORM_WINDOWS
-	#ifdef GBOX_BUILD_DLL
-		#define GBOX_API __declspec(dllexport)
+	#ifdef GBOX_DYNAMIC_LINK
+		#ifdef GBOX_BUILD_DLL
+			#define GBOX_API __declspec(dllexport)
+		#else
+			#define GBOX_API __declspec(dllimport)
+		#endif
 	#else
-		#define GBOX_API __declspec(dllimport)
+		#define GBOX_API
 	#endif
 #else
-	#error GBOX only supports Windows!
+	#error Nut only supports Windows!
 #endif
 
 #ifdef GBOX_DEBUG

@@ -40,10 +40,10 @@ group ""                                                                        
 --[[项目GBox]]
 project "GBox"                       --项目
     location "GBox"                  --项目文件的输出目录（填写解决方案GBox之下的路径 "GBox/GBox"）
-    kind "SHAREDLib"                --类型（动态库）
+    kind "StaticLib"                --类型（动态库）
     language "C++"                  --语言
     cppdialect "C++17"              --C++标准（编译时）
-    staticruntime "off"              --是否将运行时库静态链接运行时库（dll属性的文件需要关闭）
+    staticruntime "on"              --是否将运行时库静态链接运行时库（dll属性的文件需要关闭）
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")                           --输出目录(.. XX ..中 ".."是字符串连接符)
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")                          --中间目录
@@ -61,10 +61,10 @@ project "GBox"                       --项目
     --    "%{prj.name}/vendor/stb_image/**.cpp",
     }
 
-    -- defines
-    -- {
-    --     "_CRT_SECURE_NO_WARNINGS"
-    -- }
+    defines
+    {
+        "_CRT_SECURE_NO_WARNINGS"
+    }
 
     includedirs                     --库文件（包含库目录）
     {
@@ -98,26 +98,26 @@ project "GBox"                       --项目
         --  //////////////////////////////////////////////////////////////////////
         --  ////  NOW WE USE GBox AS A STATIC LIB, SO DON'T NEED THIS COMMAND  ////
         --  //////////////////////////////////////////////////////////////////////
-        postbuildcommands           --构建项目完成后执行的指令
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-            --将当前项目的构建目标文件复制到 "../bin/" 下的一个名为 "Debug/Sandbox" 或 "Release/Sandbox" 的子目录中
-        }
+        -- postbuildcommands           --构建项目完成后执行的指令
+        -- {
+        --     ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
+        --     --将当前项目的构建目标文件复制到 "../bin/" 下的一个名为 "Debug/Sandbox" 或 "Release/Sandbox" 的子目录中
+        -- }
 
     filter "configurations:Debug"   -->>> !!!  configurations, not configuration  !!!
         defines "GBox_DEBUG"
         runtime "Debug"
-        symbols "On"                --编译器是否生成带有调试符号的可执行文件
+        symbols "on"                --编译器是否生成带有调试符号的可执行文件
 
     filter "configurations:Release"
         defines "GBox_RELASE"
         runtime "Release"
-        optimize "On"               --是否开启代码优化
+        optimize "on"               --是否开启代码优化
 
     filter "configurations:Dist"
         defines "GBox_DIST"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
 ---------------------------------------------------------------------------------------------------------------
 
@@ -126,7 +126,7 @@ project "Sandbox"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
-    staticruntime "off"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -162,14 +162,14 @@ project "Sandbox"
         filter "configurations:Debug"
             defines "GBox_DEBUG"
             runtime "Debug"
-            symbols "On"            
+            symbols "on"            
 
         filter "configurations:Release"
             defines "GBox_RELASE"
             runtime "Release"
-            optimize "On"           
+            optimize "on"           
 
         filter "configurations:Dist"
             defines "GBox_DIST"
             runtime "Release"
-            optimize "On"
+            optimize "on"
