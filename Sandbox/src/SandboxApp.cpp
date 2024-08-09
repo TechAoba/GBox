@@ -25,7 +25,7 @@ class Sandbox : public GBox::Application {
 public:
     Sandbox() {
         PushLayer(new ExampleLayer());
-        PushOverlay(new GBox::ImGuiLayer());
+        // PushOverlay(new GBox::ImGuiLayer()); 将其作为 GBox 运行时 固定自动添加的图层
     }
     ~Sandbox() {
         

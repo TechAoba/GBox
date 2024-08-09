@@ -5,6 +5,8 @@
 #include "GBox/Events/ApplicationEvent.h"
 #include "GBox/Core/LayerStack.h"
 
+#include "GBox/ImGui/ImGuiLayer.h"
+
 // int main(int argc, char** argv);
 
 namespace GBox {
@@ -26,6 +28,7 @@ public:
 private:
     bool onWindowClose(WindowCloseEvent& e);
     std::unique_ptr<Window> _window;
+    ImGuiLayer* _imGuiLayer;
     bool _running = true;
     LayerStack _layerStack;
 private:

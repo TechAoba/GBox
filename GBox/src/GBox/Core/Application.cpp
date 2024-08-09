@@ -16,6 +16,9 @@ Application::Application() {
 
     _window = std::unique_ptr<Window>(Window::Create());
     _window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+    _imGuiLayer = new ImGuiLayer();												//初始化 m_ImGuiLayer 为原始指针，并推入层栈
+    PushOverlay(_imGuiLayer);
 }
 Application::~Application() {}
 
@@ -48,6 +51,11 @@ void Application::Run() {
 
         for (Layer* layer : _layerStack)
             layer->OnUpdate();
+
+        _imGuiLayer->Begin();
+        for (Layer* layer : _layerStack)
+            layer->OnImGuiRender();
+        _imGuiLayer->End();
 
         _window->OnUpdate();
     }
