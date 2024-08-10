@@ -10,6 +10,24 @@ namespace GBox {
 
 Application* Application::_instance = nullptr;
 
+uint32_t GetTypeToGLType(ShaderDataType type) {
+    switch (type) {
+        case ShaderDataType::Float:		return GL_FLOAT;
+        case ShaderDataType::Float2:	return GL_FLOAT;
+        case ShaderDataType::Float3:	return GL_FLOAT;
+        case ShaderDataType::Float4:	return GL_FLOAT;
+        case ShaderDataType::Int:		return GL_INT;
+        case ShaderDataType::Int2:		return GL_INT;
+        case ShaderDataType::Int3:		return GL_INT;
+        case ShaderDataType::Int4:		return GL_INT;
+        case ShaderDataType::Mat3:		return GL_FLOAT;
+        case ShaderDataType::Mat4:		return GL_FLOAT;
+        case ShaderDataType::Bool:		return GL_BOOL;
+    }
+    GBOX_CORE_ASSERT(false, "Unknown ShaderDataType !");
+    return 0;
+}
+
 Application::Application() {
     GBOX_CORE_ASSERT(!_instance, "Application already exists!");
     _instance = this;
@@ -31,11 +49,21 @@ Application::Application() {
     glGenVertexArrays(1, &_vertexArray);
     glBindVertexArray(_vertexArray);
 
-    glEnableVertexAttribArray(0);
-    // attribute type 0: position; 3 dimension point; value type; no normalize; 
-    // stride: the byte cnt between points; step len: the byte cnt between point's position.
-    // if there is texture behind postion, and 3 floats denote texture, last parm should be `(const void*) 8`.
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    BufferLayout layout = {
+        {ShaderDataType::Float3, "a_Position"}
+    };
+
+    // Vertex Attrib 
+    for (const auto& element : layout) {
+        uint32_t index = 0;
+        glEnableVertexAttribArray(index);
+        // attribute type 0: position; 3 dimension point; value type; no normalize; 
+        // stride: the byte cnt between points; step len: the byte cnt between point's position.
+        // if there is texture behind postion, and 3 floats denote texture, last parm should be `(const void*) 8`.
+        glVertexAttribPointer(index, element.Count, element.GLType, 
+            element.Normalized ? GL_TRUE : GL_FALSE, layout.GetStride(), (const void*)element.Offset);
+        index++;
+    }
 
     unsigned int indices[3]{
         0, 1, 2
