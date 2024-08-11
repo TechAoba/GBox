@@ -78,14 +78,15 @@ public:
     inline const std::vector<LayoutElement>& GetElements() const { return m_Elements; }
     inline const uint32_t& GetStride() const { return m_Stride; }
 
-    std::vector<LayoutElement>::iterator begin() { return m_Elements.begin(); };
-    std::vector<LayoutElement>::iterator end() { return m_Elements.end(); };	
+    std::vector<LayoutElement>::iterator begin() { return m_Elements.begin(); };		
+    std::vector<LayoutElement>::iterator end() { return m_Elements.end(); };			
+    std::vector<LayoutElement>::const_iterator begin() const { return m_Elements.begin(); }
+    std::vector<LayoutElement>::const_iterator end() const { return m_Elements.end(); }
 private:
     std::vector<LayoutElement> m_Elements;
     uint32_t m_Stride;
 private:
-    void CalcOffsetAndStride()
-    {
+    void CalcOffsetAndStride() {
         m_Stride = 0;
         uint32_t offset = 0;
         for (auto& element : m_Elements) {

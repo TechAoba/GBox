@@ -6,6 +6,7 @@
 #include "GBox/Core/LayerStack.h"
 
 #include "GBox/ImGui/ImGuiLayer.h"
+#include "GBox/Renderer/VertexArray.h"
 #include "GBox/Renderer/Shader.h"
 #include "GBox/Renderer/Buffer.h"
 
@@ -33,11 +34,15 @@ private:
     bool _running = true;
     LayerStack _layerStack;
 
-    unsigned int _vertexArray;
     std::unique_ptr<Window> _window;
-    std::unique_ptr<Shader> m_Shader;
-    std::unique_ptr<VertexBuffer> m_VertexBuffer;
-    std::unique_ptr<IndexBuffer> m_IndexBuffer;
+    
+    std::shared_ptr<Shader> m_Shader;
+    std::shared_ptr<VertexArray> m_VertexArray;
+    std::shared_ptr<VertexBuffer> m_VertexBuffer;
+    std::shared_ptr<IndexBuffer> m_IndexBuffer;
+
+    std::shared_ptr<Shader> m_SquareShader;
+    std::shared_ptr<VertexArray> m_SquareVA;
 
 private:
     static Application* _instance;					//! ! !唯一实例的静态成员（static类型，需要初始化定义）

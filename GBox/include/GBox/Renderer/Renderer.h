@@ -17,6 +17,5 @@ private:
     static RendererAPI s_API;
 };
 
-RendererAPI Renderer::s_API = RendererAPI::OpenGL;
 
 }
