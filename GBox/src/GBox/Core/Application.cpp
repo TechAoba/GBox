@@ -1,32 +1,13 @@
 #include "gboxpch.h"
 #include "GBox/Core/Application.h"
 #include "GBox/Core/Input.h"
-
-#include <glad/glad.h>
+#include "GBox/Renderer/Renderer.h"
 
 namespace GBox {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 Application* Application::_instance = nullptr;
-
-uint32_t GetTypeToGLType(ShaderDataType type) {
-    switch (type) {
-        case ShaderDataType::Float:		return GL_FLOAT;
-        case ShaderDataType::Float2:	return GL_FLOAT;
-        case ShaderDataType::Float3:	return GL_FLOAT;
-        case ShaderDataType::Float4:	return GL_FLOAT;
-        case ShaderDataType::Int:		return GL_INT;
-        case ShaderDataType::Int2:		return GL_INT;
-        case ShaderDataType::Int3:		return GL_INT;
-        case ShaderDataType::Int4:		return GL_INT;
-        case ShaderDataType::Mat3:		return GL_FLOAT;
-        case ShaderDataType::Mat4:		return GL_FLOAT;
-        case ShaderDataType::Bool:		return GL_BOOL;
-    }
-    GBOX_CORE_ASSERT(false, "Unknown ShaderDataType !");
-    return 0;
-}
 
 Application::Application() {
     GBOX_CORE_ASSERT(!_instance, "Application already exists!");
@@ -166,17 +147,19 @@ void Application::OnEvent(Event& e) {
 
 void Application::Run() {
     while (_running) {
-        glClearColor(0.1f, 0.1f, 0.1f, 1);
-        glClear(GL_COLOR_BUFFER_BIT);
-        
+
+        RendererCommand::Clear();
+        RendererCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+        Renderer::BeginScene();
+
         m_SquareShader->Bind();
-        m_SquareVA->Bind();
-        glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        Renderer::Submit(m_SquareVA);
 
         m_Shader->Bind();
-        m_VertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+        Renderer::Submit(m_VertexArray);
 
+        Renderer::EndScene();
+        
         for (Layer* layer : _layerStack)
             layer->OnUpdate();
 

@@ -1,23 +1,25 @@
 #include "gboxpch.h"
-#include "GBox/Renderer/VertexArray.h"
-#include "GBox/Renderer/RendererAPI.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "GBox/Renderer/RendererCommand.h"
+
+#include "Platform/OpenGL/OpenGLRendererAPI.h"
 
 namespace GBox
 {
-
-VertexArray* VertexArray::Create() {
+RendererAPI* RendererAPI::Create() {
     switch (RendererAPI::GetAPI()) {
         case RendererAPI::API::None: GBOX_CORE_ASSERT(false, "RendererAPI::None is currently not supported! ")
             return nullptr;
         case RendererAPI::API::OpenGL:
-            return new OpenGLVertexArray();
+            return new OpenGLRendererAPI();
         case RendererAPI::API::DirectX: GBOX_CORE_ASSERT(false, "RendererAPI::DirectX is currently not supported! ")
             return nullptr;
     }
-
-    GBOX_CORE_ASSERT(false, "Unknown Renderer API!")
+    GBOX_CORE_ASSERT(false, "Unknown Renderer API!");
     return nullptr;
 }
+
+RendererAPI* RendererCommand::s_RendererAPI = RendererAPI::Create();
+
+//RendererAPI* RendererCommand::s_RendererAPI = new OpenGLRendererAPI;
 
 }

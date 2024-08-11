@@ -28,8 +28,6 @@ static  uint32_t ShaderDataTypeSize(ShaderDataType type) {
     return 0;
 }
 
-extern uint32_t GetTypeToGLType(ShaderDataType type);
-
 struct LayoutElement {
     std::string Name;
     ShaderDataType Type;
@@ -43,7 +41,7 @@ struct LayoutElement {
 
     LayoutElement(ShaderDataType type, const std::string& name, bool normalized = false)
         : Type(type), Name(name), Size(ShaderDataTypeSize(type)), Offset(0), Count(GetComponentCount()), 
-        Normalized(normalized), GLType(GBox::GetTypeToGLType(type))
+        Normalized(normalized), GLType(GetTypeToGLType(type))
     {}
 
     uint32_t GetComponentCount() const {
@@ -59,6 +57,24 @@ struct LayoutElement {
             case ShaderDataType::Mat3:		return 3 * 3;
             case ShaderDataType::Mat4:		return 4 * 4;
             case ShaderDataType::Bool:		return 1;
+        }
+        GBOX_CORE_ASSERT(false, "Unknown ShaderDataType !");
+        return 0;
+    }
+
+    uint32_t GetTypeToGLType(ShaderDataType type) {
+        switch (type) {
+        case ShaderDataType::Float:		return 0x1406;				//GL_FLOAT == 0x1406
+        case ShaderDataType::Float2:	return 0x1406;
+        case ShaderDataType::Float3:	return 0x1406;
+        case ShaderDataType::Float4:	return 0x1406;
+        case ShaderDataType::Int:		return 0x1404;				//GL_INT == 0x1404
+        case ShaderDataType::Int2:		return 0x1404;
+        case ShaderDataType::Int3:		return 0x1404;
+        case ShaderDataType::Int4:		return 0x1404;
+        case ShaderDataType::Mat3:		return 0x1406;
+        case ShaderDataType::Mat4:		return 0x1406;
+        case ShaderDataType::Bool:		return 0x8B56;				// GL_BOOL == 0x8B56
         }
         GBOX_CORE_ASSERT(false, "Unknown ShaderDataType !");
         return 0;

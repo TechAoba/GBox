@@ -8,7 +8,7 @@ namespace GBox
 class OpenGLVertexArray : public VertexArray {
 public:
     OpenGLVertexArray();
-    virtual ~OpenGLVertexArray() {};
+    virtual ~OpenGLVertexArray();
 
     void Bind() const override;
     void Unbind() const override;
