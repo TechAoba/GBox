@@ -36,16 +36,6 @@ private:
     LayerStack _layerStack;
 
     std::unique_ptr<Window> _window;
-    
-    std::shared_ptr<Shader> m_Shader;
-    std::shared_ptr<VertexArray> m_VertexArray;
-    std::shared_ptr<VertexBuffer> m_VertexBuffer;
-    std::shared_ptr<IndexBuffer> m_IndexBuffer;
-
-    std::shared_ptr<Shader> m_SquareShader;
-    std::shared_ptr<VertexArray> m_SquareVA;
-
-    OrthograpgicCamera m_Camera;
 
 private:
     static Application* _instance;					//! ! !唯一实例的静态成员（static类型，需要初始化定义）
