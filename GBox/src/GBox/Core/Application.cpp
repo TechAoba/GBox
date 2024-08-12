@@ -9,7 +9,8 @@ namespace GBox {
 
 Application* Application::_instance = nullptr;
 
-Application::Application() {
+Application::Application() : m_Camera(-1.6f, 1.6f, -0.9f, 0.9f) 
+{
     GBOX_CORE_ASSERT(!_instance, "Application already exists!");
     _instance = this;
 
@@ -67,6 +68,8 @@ Application::Application() {
         layout(location = 0) in vec3 a_Position;
         layout(location = 1) in vec4 a_Color;
 
+        uniform mat4 u_ViewProjection;
+
         out vec3 v_Position;
         out vec4 v_Color;
 
@@ -74,21 +77,22 @@ Application::Application() {
         {
             v_Position = a_Position;
             v_Color = a_Color;
-            gl_Position = vec4(a_Position, 1.0);
+            gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
         }
     )";
 
     std::string fragmentSrc = R"(
         #version 330 core
 
+        layout(location = 0) out vec4 color;
+        
         in vec3 v_Position;
         in vec4 v_Color;
-        layout(location = 0) out vec4 a_Color;
 
         void main()
         {
-            a_Color = vec4(v_Position * 0.5 + 0.5, 1.0);
-            a_Color = v_Color;
+            color = vec4(v_Position * 0.5 + 0.5, 1.0);
+            color = v_Color;
         }
     )";
 
@@ -98,11 +102,13 @@ Application::Application() {
         layout(location = 0) in vec3 a_Position;
 
         out vec3 v_Position;
+        
+        uniform mat4 u_ViewProjection;
 
         void main()
         {
             v_Position = a_Position;
-            gl_Position = vec4(a_Position, 1.0);
+            gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
         }
     )";
 
@@ -114,7 +120,7 @@ Application::Application() {
 
         void main()
         {
-            a_Color = vec4(0.2, 0.3, 0.8, 1.0);
+            color = vec4(0.2, 0.3, 0.8, 1.0);
         }
     )";
 
@@ -150,13 +156,14 @@ void Application::Run() {
 
         RendererCommand::Clear();
         RendererCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-        Renderer::BeginScene();
 
-        m_SquareShader->Bind();
-        Renderer::Submit(m_SquareVA);
+        m_Camera.SetPosition( {0.5f, 0.5f, 0.0f} );
+        m_Camera.SetRotation( 45.0f );
 
-        m_Shader->Bind();
-        Renderer::Submit(m_VertexArray);
+        Renderer::BeginScene(m_Camera);
+
+        Renderer::Submit(m_SquareShader, m_SquareVA);
+        Renderer::Submit(m_Shader, m_VertexArray);
 
         Renderer::EndScene();
         

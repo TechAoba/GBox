@@ -9,6 +9,7 @@
 #include "GBox/Renderer/VertexArray.h"
 #include "GBox/Renderer/Shader.h"
 #include "GBox/Renderer/Buffer.h"
+#include "GBox/Renderer/OrthographicCamera.h"
 
 // int main(int argc, char** argv);
 
@@ -43,6 +44,8 @@ private:
 
     std::shared_ptr<Shader> m_SquareShader;
     std::shared_ptr<VertexArray> m_SquareVA;
+
+    OrthograpgicCamera m_Camera;
 
 private:
     static Application* _instance;					//! ! !唯一实例的静态成员（static类型，需要初始化定义）
