@@ -10,6 +10,7 @@
 #include "GBox/Renderer/Shader.h"
 #include "GBox/Renderer/Buffer.h"
 #include "GBox/Renderer/OrthographicCamera.h"
+#include "GBox/Core/TimeStep.h"
 
 // int main(int argc, char** argv);
 
@@ -31,11 +32,13 @@ public:
     inline Window& GetWindow() { return *_window; }
 private:
     bool onWindowClose(WindowCloseEvent& e);
+
     ImGuiLayer* _imGuiLayer;
     bool _running = true;
     LayerStack _layerStack;
-
     std::unique_ptr<Window> _window;
+    
+    float m_LastFrameTime = 0.0f;
 
 private:
     static Application* _instance;					//! ! !唯一实例的静态成员（static类型，需要初始化定义）

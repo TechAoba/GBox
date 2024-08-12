@@ -2,6 +2,7 @@
 
 #include "GBox/Core/Core.h"
 #include "GBox/Events/Event.h"
+#include "GBox/Core/TimeStep.h"
 
 namespace GBox {
 
@@ -12,7 +13,7 @@ public:
     
     virtual void OnAttach() {}
     virtual void OnDetach() {}
-    virtual void OnUpdate() {}
+    virtual void OnUpdate(TimeStep ts) {}
     virtual void OnImGuiRender() {}
     virtual void OnEvent(Event& event) {}
     

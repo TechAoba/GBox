@@ -115,25 +115,27 @@ public:
         m_SquareShader.reset(new GBox::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
     }
 
-    void OnUpdate() override {
+    void OnUpdate(GBox::TimeStep ts) override {
+        GBOX_INFO("Delta time: {0}s, ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
+
         if (GBox::Input::IsKeyPressed(GBOX_KEY_LEFT)) {
-            m_CameraPosition.x -= m_CameraMoveSpeed;
+            m_CameraPosition.x -= m_CameraMoveSpeed * ts;
         }
         else if (GBox::Input::IsKeyPressed(GBOX_KEY_RIGHT)) {
-            m_CameraPosition.x += m_CameraMoveSpeed;
+            m_CameraPosition.x += m_CameraMoveSpeed * ts;
         }
         else if (GBox::Input::IsKeyPressed(GBOX_KEY_UP)) {
-            m_CameraPosition.y += m_CameraMoveSpeed;
+            m_CameraPosition.y += m_CameraMoveSpeed * ts;
         }
         else if (GBox::Input::IsKeyPressed(GBOX_KEY_DOWN)) {
-            m_CameraPosition.y -= m_CameraMoveSpeed;
+            m_CameraPosition.y -= m_CameraMoveSpeed * ts;
         }
         else if (GBox::Input::IsKeyPressed(GBOX_KEY_A)) {
-            m_CameraRotation += m_CameraRotateSpeed;
+            m_CameraRotation += m_CameraRotateSpeed * ts;
             m_Camera.SetRotation( m_CameraRotation );
         }
         else if (GBox::Input::IsKeyPressed(GBOX_KEY_D)) {
-            m_CameraRotation -= m_CameraRotateSpeed;
+            m_CameraRotation -= m_CameraRotateSpeed * ts;
             m_Camera.SetRotation( m_CameraRotation );
         }
 
@@ -168,10 +170,10 @@ private:
 
     GBox::OrthograpgicCamera m_Camera;
     glm::vec3 m_CameraPosition;
-    float m_CameraMoveSpeed = 0.05f;
+    float m_CameraMoveSpeed = 1.0f;
 
     float m_CameraRotation = 0.0f;
-    float m_CameraRotateSpeed = 2.0f;
+    float m_CameraRotateSpeed = 30.0f;
 };
 
 class Sandbox : public GBox::Application {

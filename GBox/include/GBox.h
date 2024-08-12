@@ -4,6 +4,7 @@
 #include "GBox/Core/Application.h"
 #include "GBox/Core/Layer.h"
 #include "GBox/Core/Log.h"
+#include "GBox/Core/TimeStep.h"
 
 #include "GBox/Core/Input.h"
 #include "GBox/Core/KeyCodes.h"

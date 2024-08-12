@@ -3,6 +3,8 @@
 #include "GBox/Core/Input.h"
 #include "GBox/Renderer/Renderer.h"
 
+#include <glfw/glfw3.h>
+
 namespace GBox {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -46,8 +48,13 @@ void Application::OnEvent(Event& e) {
 
 void Application::Run() {
     while (_running) {
+
+        float time = (float)glfwGetTime(); // TODO Platform::GetTime()
+        TimeStep timestep = time - m_LastFrameTime;
+        m_LastFrameTime = time;
+
         for (Layer* layer : _layerStack)
-            layer->OnUpdate();
+            layer->OnUpdate(timestep);
 
         _imGuiLayer->Begin();
         for (Layer* layer : _layerStack)
