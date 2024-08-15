@@ -6,6 +6,10 @@ namespace GBox
 {
 Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData();
 
+void Renderer::Init() {
+    RendererCommand::Init();
+}
+
 void Renderer::BeginScene(OrthograpgicCamera& camera) {
     m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 }

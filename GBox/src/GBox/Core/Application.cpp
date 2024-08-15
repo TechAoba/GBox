@@ -18,6 +18,8 @@ Application::Application() {
     _window = std::unique_ptr<Window>(Window::Create());
     _window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
+    Renderer::Init();
+
     _imGuiLayer = new ImGuiLayer();												//初始化 m_ImGuiLayer 为原始指针，并推入层栈
     PushOverlay(_imGuiLayer);
 }

@@ -8,6 +8,8 @@ namespace GBox
 
 class Renderer {
 public:
+    static void Init();
+
     static void BeginScene(OrthograpgicCamera& camera);
     static void EndScene();
 

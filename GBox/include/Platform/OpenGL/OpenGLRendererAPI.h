@@ -6,10 +6,12 @@ namespace GBox {
 
 class OpenGLRendererAPI : public RendererAPI {
 public:
-    void Clear() override;
-    void SetClearColor(const glm::vec4& color) override;
+    virtual void Init() override;
 
-    void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
+    virtual void Clear() override;
+    virtual void SetClearColor(const glm::vec4& color) override;
+
+    virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
 };
 
 }
