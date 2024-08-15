@@ -20,6 +20,7 @@
 
 #include "GBox/Renderer/Buffer.h"
 #include "GBox/Renderer/Shader.h"
+#include "GBox/Renderer/Texture.h"
 #include "GBox/Renderer/VertexArray.h"
 
 #include "GBox/Renderer/OrthoGraphicCamera.h"

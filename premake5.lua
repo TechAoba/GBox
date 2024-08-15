@@ -21,7 +21,7 @@ IncludeDir["GLFW"] = "GBox/vendor/GLFW/include"                                 
 IncludeDir["Glad"] = "GBox/vendor/Glad/include"                                  --将表的"Glad"键索引到此路径
 IncludeDir["ImGui"] = "GBox/vendor/imgui"                                        --将表的"ImGui"键索引到此路径
 IncludeDir["glm"] = "GBox/vendor/glm"                                            --将表的"ImGui"键索引到此路径
--- IncludeDir["stb_image"] = "GBox/vendor/stb_image"
+IncludeDir["stb_image"] = "GBox/vendor/stb_image"
 
 ---------------------------------------------------------------------------------------
 -- 包含GBox/GBox/vendor/GLFW、GBox/GBox/vendor/Glad、GBox/GBox/vendor/imgui中的premake文件，将其作为依赖项，并合并到这里
@@ -56,9 +56,9 @@ project "GBox"                       --项目
        "%{prj.name}/include/**.h",
        "%{prj.name}/src/**.cpp",
        "%{prj.name}/vendor/glm/glm/**.hpp",
-       "%{prj.name}/vendor/glm/glm/**.inl"
-    --    "%{prj.name}/vendor/stb_image/**.h",
-    --    "%{prj.name}/vendor/stb_image/**.cpp",
+       "%{prj.name}/vendor/glm/glm/**.inl",
+       "%{prj.name}/vendor/stb_image/**.h",
+       "%{prj.name}/vendor/stb_image/**.cpp"
     }
 
     defines
@@ -74,8 +74,8 @@ project "GBox"                       --项目
         "%{IncludeDir.GLFW}",                                                   --将IncludeDir表中GLFW键索引的值（地址）作为一个库文件路径
         "%{IncludeDir.Glad}",                                                   --将IncludeDir表中Glad键索引的值（地址）作为一个库文件路径
         "%{IncludeDir.ImGui}",                                                  --将IncludeDir表中ImGui键索引的值（地址）作为一个库文件路径
-        "%{IncludeDir.glm}"                                                    --将IncludeDir表中glm键索引的值（地址）作为一个库文件路径
-        -- "%{IncludeDir.stb_image}"
+        "%{IncludeDir.glm}",                                                    --将IncludeDir表中glm键索引的值（地址）作为一个库文件路径
+        "%{IncludeDir.stb_image}"
     }
 
     links                           --为GBox项目(.dll)链接文件

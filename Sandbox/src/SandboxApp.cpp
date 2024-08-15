@@ -31,14 +31,15 @@ public:
         m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
         // -------------- Square rendering ----------------
-        float squareVertices[3 * 4] = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.5f,  0.5f, 0.0f,
-            -0.5f,  0.5f, 0.0f
+        float squareVertices[5 * 4] = {
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+             0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+             0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f
         };
         GBox::BufferLayout squareLayout = {
-            {GBox::ShaderDataType::Float3, "a_Position"}
+            {GBox::ShaderDataType::Float3, "a_Position"},
+            {GBox::ShaderDataType::Float2, "a_TexCoord"},
         };
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
@@ -114,12 +115,51 @@ public:
             }
         )";
 
+        std::string textureShaderVertexSrc = R"(
+            #version 330 core
+            
+            layout(location = 0) in vec3 a_Position;
+            layout(location = 1) in vec2 a_TexCoord;
+            
+            uniform mat4 u_ViewProjection;
+            uniform mat4 u_Transform;
+
+            out vec2 v_TexCoord;
+
+            void main()
+            {
+                v_TexCoord = a_TexCoord;
+                gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+            }
+        )";
+
+        std::string textureShaderFragmentSrc = R"(
+            #version 330 core
+
+            layout(location = 0) out vec4 color;
+            
+            in vec2 v_TexCoord;
+
+            uniform sampler2D u_Texture;
+
+            void main()
+            {
+                color = texture(u_Texture, v_TexCoord);
+            }
+        )";
+
         m_Shader.reset(GBox::Shader::Create(vertexSrc, fragmentSrc));
         m_SquareShader.reset(GBox::Shader::Create(blueShaderVertexSrc, blueShaderFragmentSrc));
+
+        m_TextureShader.reset(GBox::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+        m_Texture = GBox::Texture2D::Create("assets/textures/Checkerboard.png");
+        
+        std::dynamic_pointer_cast<GBox::OpenGLShader>(m_TextureShader)->Bind();
+        std::dynamic_pointer_cast<GBox::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
     }
 
     void OnUpdate(GBox::TimeStep ts) override {
-        GBOX_INFO("Delta time: {0}s, ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
+        // GBOX_INFO("Delta time: {0}s, ({1}ms)", ts.GetSeconds(), ts.GetMilliseconds());
 
         if (GBox::Input::IsKeyPressed(GBOX_KEY_LEFT)) {
             m_CameraPosition.x -= m_CameraMoveSpeed * ts;
@@ -151,9 +191,6 @@ public:
 
         glm::mat4 scale = glm::scale(glm::mat4(1.0), glm::vec3(0.1f));
 
-        std::dynamic_pointer_cast<GBox::OpenGLShader>(m_SquareShader)->Bind();
-        std::dynamic_pointer_cast<GBox::OpenGLShader>(m_SquareShader)->UploadUniformFloat3("u_Color", m_SquareColor);
-
         // GBox::MaterialRef material = new GBox::Material(m_FlatColorShader);
         // GBox::MaterialInstanceRef mi = new GBox::MaterialInstance(material);
         // mi->SetValue("u_Color", redColor);
@@ -167,6 +204,11 @@ public:
                 GBox::Renderer::Submit(m_SquareShader, m_SquareVA, transform);
             }
         }
+
+        m_Texture->Bind();
+        GBox::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+        // Triangle
         // GBox::Renderer::Submit(m_Shader, m_VertexArray);
         GBox::Renderer::EndScene();
     }
@@ -182,11 +224,13 @@ public:
     }
 
 private:
-    std::shared_ptr<GBox::Shader> m_Shader;
-    std::shared_ptr<GBox::VertexArray> m_VertexArray;
+    GBox::Ref<GBox::Shader> m_Shader;
+    GBox::Ref<GBox::VertexArray> m_VertexArray;
 
-    std::shared_ptr<GBox::Shader> m_SquareShader;
-    std::shared_ptr<GBox::VertexArray> m_SquareVA;
+    GBox::Ref<GBox::Shader> m_SquareShader, m_TextureShader;
+    GBox::Ref<GBox::VertexArray> m_SquareVA;
+
+    GBox::Ref<GBox::Texture2D> m_Texture;
 
     GBox::OrthograpgicCamera m_Camera;
     glm::vec3 m_CameraPosition;
